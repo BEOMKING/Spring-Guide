@@ -11,11 +11,11 @@ public class MemberCreateRequest {
     @Email
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "{NotBlank}")
     private String name;
 
     @NotBlank
-    @Size(min = 8, max = 20)
+    @Size(min = 8, max = 20, message = "{Size.password}")
     private String password;
 
     public Member toEntity() {
