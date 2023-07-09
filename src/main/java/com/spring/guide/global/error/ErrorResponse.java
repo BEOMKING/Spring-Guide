@@ -15,7 +15,7 @@ import java.util.Locale;
 public class ErrorResponse {
     private String code;
     private String message;
-    private List<CustomError> errors;
+    private List<CustomError> fieldErrors;
 
     public ErrorResponse() {
     }
@@ -27,16 +27,20 @@ public class ErrorResponse {
     public ErrorResponse(String code, String message) {
         this(code);
         this.message = message;
-        this.errors = new ArrayList<>();
+        this.fieldErrors = new ArrayList<>();
     }
 
-    public ErrorResponse(String code, String message, List<CustomError> errors) {
+    public ErrorResponse(String code, String message, List<CustomError> fieldErrors) {
         this(code, message);
-        this.errors = errors;
+        this.fieldErrors = fieldErrors;
     }
 
     public static ErrorResponse of(final ErrorCode errorCode) {
         return new ErrorResponse(errorCode.getCode(), errorCode.getMessage());
+    }
+
+    public static ErrorResponse of(final ErrorCode errorCode, final Errors errors) {
+        return new ErrorResponse(errorCode.getCode(), errorCode.getMessage(), CustomError.of(errors));
     }
 
     public static ErrorResponse of(final ErrorCode errorCode, final Errors errors, final MessageSource messageSource, final Locale locale) {
@@ -88,7 +92,7 @@ public class ErrorResponse {
                             new CustomError(
                             error.getField(),
                             error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
-                            error.getDefaultMessage() == null ? messageSource.getMessage(error, locale) : error.getDefaultMessage()))
+                            messageSource.getMessage(error, locale)))
                     .toList();
         }
     }
