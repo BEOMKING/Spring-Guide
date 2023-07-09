@@ -283,6 +283,27 @@ public class ErrorResponse {
 > 이 방식을 활용해 메시지 국제화를 수행할 수 있다.  
 > 위 예제처럼 필드 메시지를 따로 커스텀 국제화할 필요는 없어보인다. `Bean Validation`의 기본 메시지가 국제화를 잘 지원해 준다.
 
+응답은 다음과 같다.
+
+```json
+{
+    "code": "C001",
+    "message": "Invalid Input Value",
+    "fieldErrors": [
+        {
+            "field": "password",
+            "value": "123453",
+            "reason": "비밀번호의 길이가 올바르지 않습니다."
+        },
+        {
+            "field": "age",
+            "value": "8",
+            "reason": "최소값과 최대값 사이의 값을 입력해 주세요."
+        }
+    ]
+}
+```
+
 ## 결론
 
 일관된 `Error Response`를 통해 예외처리를 간단하게 처리할 수 있으며 클라이언트에게 예외 정보를 제공할 수 있다.
