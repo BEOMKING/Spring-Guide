@@ -16,4 +16,9 @@ public class MemberRepository {
         memberMap.put(id, member);
         return member;
     }
+
+    public boolean existsByEmail(final String email) {
+        return memberMap.values().stream()
+                .anyMatch(member -> member.getEmail().equals(email));
+    }
 }
