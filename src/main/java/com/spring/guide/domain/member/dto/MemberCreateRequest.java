@@ -29,6 +29,7 @@ public class MemberCreateRequest {
                 .email(email)
                 .name(name)
                 .password(password)
+                .age(age)
                 .build();
     }
 }
