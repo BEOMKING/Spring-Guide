@@ -19,7 +19,7 @@ class ConditionalAndExpressionTest {
             .withConfiguration(UserConfigurations.of(ConditionalConfig.class));
 
     @Test
-    @DisplayName("Expression 값이 존재하면 ConditionalConfig 빈이 생성된다.")
+    @DisplayName("Conditional 조건을 충족하면 빈이 생성된다.")
     void conditionalConfigBeanIsCreated() {
         contextRunner.withPropertyValues("product.premium.purchase=true")
                 .run(context -> {
@@ -29,24 +29,24 @@ class ConditionalAndExpressionTest {
     }
 
     @Test
-    @DisplayName("Expression 값을 누락해도 기본 값 설정이 있으면 기본 값을 반환한다.")
+    @DisplayName("Conditional 조건을 충족하지 않으면 빈이 생성되지 않는다.")
+    void conditionalConfigBeanIsNotCreated() {
+        contextRunner.run(context -> assertThat(context).doesNotHaveBean(ConditionalConfig.class));
+    }
+
+    @Test
+    @DisplayName("Expression 데이터를 세팅하지 않아도 기본 값이 있으면 기본 값을 반환한다.")
     void expressionActivateConfigWithDefaultValue() {
         contextRunner.withPropertyValues("product.premium.purchase=true")
                 .run(context -> assertThat(context.getBean(ConditionalConfig.class).getHasDefaultValue()).isEqualTo("Basic"));
     }
 
     @Test
-    @DisplayName("Expression 값을 누락하고 기본 값이 없으면 에러를 발생시킨다.")
+    @DisplayName("Expression 데이터를 세팅하지 않고 기본 값이 없으면 에러가 발생한다.")
     void expressionActivateConfigWithoutDefaultValue() {
         contextRunner.withPropertyValues("product.premium.purchase=true")
                 .run(context -> assertThat(context.getBean(ConditionalConfig.class).getNoDefaultValue()).isEqualTo("${product.premium.grade}"));
 
-    }
-
-    @Test
-    @DisplayName("Expression 값이 누락되면 ConditionalConfig 빈이 생성되지 않는다.")
-    void conditionalConfigBeanIsNotCreated() {
-        contextRunner.run(context -> assertThat(context).doesNotHaveBean(ConditionalConfig.class));
     }
 
     @TestConfiguration
