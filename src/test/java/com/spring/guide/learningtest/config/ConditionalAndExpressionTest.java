@@ -36,7 +36,7 @@ class ConditionalAndExpressionTest {
     }
 
     @Test
-    @DisplayName("Expression 값을 누락하고 Expression의 기본 값이 없으면 에러를 발생시킨다.")
+    @DisplayName("Expression 값을 누락하고 기본 값이 없으면 에러를 발생시킨다.")
     void expressionActivateConfigWithoutDefaultValue() {
         contextRunner.withPropertyValues("product.premium.purchase=true")
                 .run(context -> assertThat(context.getBean(ConditionalConfig.class).getNoDefaultValue()).isEqualTo("${product.premium.grade}"));
