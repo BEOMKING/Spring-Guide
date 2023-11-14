@@ -41,6 +41,11 @@ class ConditionalAndExpressionTest {
                 .run(context -> assertThat(context.getBean(ConditionalConfig.class).getHasDefaultValue()).isEqualTo("Basic"));
     }
 
+    /**
+     * <p>스프링 애플리케이션은 빈이 생성되는 시점에 Expression 데이터를 세팅하지 못하면 에러가 발생한다.
+     * <p>하지만 TestConfiguration을 사용하면 빈이 생성되는 시점에 Expression 데이터를 세팅하지 않아도 빈이 생성되고 Expression 그대로 반환하는 문제가 있었다.
+     * <p>일단 테스트를 통과시키기 위해 반환하는 값을 Expected로 세팅하였다.
+     */
     @Test
     @DisplayName("Expression 데이터를 세팅하지 않고 기본 값이 없으면 에러가 발생한다.")
     void expressionActivateConfigWithoutDefaultValue() {
