@@ -8,11 +8,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.annotation.UserConfigurations;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringJUnitConfig(ConditionalAndExpressionTest.ConditionalConfig.class)
 class ConditionalAndExpressionTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
@@ -42,8 +40,8 @@ class ConditionalAndExpressionTest {
     }
 
     /**
-     * <p>스프링 애플리케이션은 빈이 생성되는 시점에 Expression 데이터를 세팅하지 못하면 에러가 발생한다.
-     * <p>하지만 TestConfiguration을 사용하면 빈이 생성되는 시점에 Expression 데이터를 세팅하지 않아도 빈이 생성되고 Expression 그대로 반환하는 문제가 있었다.
+     * <p>스프링 애플리케이션은 빈이 생성되는 시점에 @Value 같은 곳에 사용되는 Expression 데이터를 세팅하지 않으면 에러가 발생한다.
+     * <p>하지만 Test에서는 빈이 생성되는 시점에 Expression 데이터를 세팅하지 않아도 빈이 생성되고 Expression 그대로 반환하는 문제가 있었다.
      * <p>일단 테스트를 통과시키기 위해 반환하는 값을 Expected로 세팅하였다.
      */
     @Test
@@ -51,7 +49,6 @@ class ConditionalAndExpressionTest {
     void expressionActivateConfigWithoutDefaultValue() {
         contextRunner.withPropertyValues("product.premium.purchase=true")
                 .run(context -> assertThat(context.getBean(ConditionalConfig.class).getNoDefaultValue()).isEqualTo("${product.premium.grade}"));
-
     }
 
     @TestConfiguration
