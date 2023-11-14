@@ -8,9 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.annotation.UserConfigurations;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -34,6 +32,11 @@ class ConditionalFalseTest {
         assertThat(conditionalConfig).isNull();
     }
 
+    /**
+     * <p>스프링 애플리케이션은 빈이 생성되는 시점에 @Value 같은 곳에 사용되는 Expression 데이터를 세팅하지 않으면 에러가 발생한다.
+     * <p>하지만 Test에서는 빈이 생성되는 시점에 Expression 데이터를 세팅하지 않아도 빈이 생성되고 Expression 그대로 반환하는 문제가 있었다.
+     * <p>일단 테스트를 통과시키기 위해 반환하는 값을 Expected로 세팅하였다.
+     */
     @Test
     @DisplayName("Expression 데이터를 세팅하지 않고 기본 값이 없으면 에러가 발생한다.")
     void expressionActivateConfigWithoutDefaultValue() {
