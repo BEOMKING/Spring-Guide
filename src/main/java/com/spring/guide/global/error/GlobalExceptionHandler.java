@@ -18,7 +18,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.util.Locale;
 
 @Slf4j
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "com.spring.guide.domain")
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
