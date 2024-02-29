@@ -5,31 +5,24 @@ import lombok.Getter;
 @Getter
 public class Result {
     Integer retryCount;
-    Boolean scuccess;
-    SearchResult searchResult;
+    Boolean success;
     String detail;
 
     public Result() {
     }
 
-    public Result(Integer retryCount, Boolean scuccess, SearchResult searchResult, String detail) {
+    public Result(Integer retryCount, Boolean success, String detail) {
         this.retryCount = retryCount;
-        this.scuccess = scuccess;
-        this.searchResult = searchResult;
+        this.success = success;
         this.detail = detail;
     }
 
-    @Getter
-    public static class SearchResult {
-        private String token;
-        private boolean subscribe;
-
-        public SearchResult() {
-        }
-
-        public SearchResult(String token, boolean subscribe) {
-            this.token = token;
-            this.subscribe = subscribe;
-        }
+    public static Result ok(final int retryCount, final String result) {
+        return new Result(retryCount, true, result);
     }
+
+    public static Result fail(final int retryCount, String message) {
+        return new Result(retryCount, false, message);
+    }
+
 }
