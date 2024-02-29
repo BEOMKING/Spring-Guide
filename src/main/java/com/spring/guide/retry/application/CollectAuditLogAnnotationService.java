@@ -12,13 +12,12 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 @Slf4j
-@Component
 public class CollectAuditLogAnnotationService implements CollectAuditLogService {
     private final RestTemplate restTemplate;
     private int tokenRequestCount = 0;
     private int subscribeRequestCount = 0;
     private int auditLogRequestCount = 0;
-    private int count = 0;
+
     public CollectAuditLogAnnotationService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }

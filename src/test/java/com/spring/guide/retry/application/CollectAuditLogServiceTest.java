@@ -15,12 +15,12 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-class CollectAuditLogAnnotationServiceTest {
+class CollectAuditLogServiceTest {
     @MockBean
     private RestTemplate restTemplate;
 
     @Autowired
-    private CollectAuditLogAnnotationService collectAuditLogAnnotationService;
+    private CollectAuditLogService collectAuditLogService;
 
     @Test
     @DisplayName("예외 발생시 재처리가 되고 성공을 반환한다.")
@@ -29,10 +29,10 @@ class CollectAuditLogAnnotationServiceTest {
         given(restTemplate.getForObject("http://localhost:8080/audit", String.class)).willReturn("success");
 
         // when
-        final Result result = collectAuditLogAnnotationService.retry();
+        final Result result = collectAuditLogService.retry();
 
         // then
-        assertThat(result.getRetryCount()).isEqualTo(4);
+        assertThat(result.getRetryCount()).isEqualTo(3);
         assertThat(result.getSuccess()).isTrue();
         assertThat(result.getDetail()).isEqualTo("success");
     }
@@ -44,7 +44,7 @@ class CollectAuditLogAnnotationServiceTest {
         given(restTemplate.getForObject("http://localhost:8080/audit", String.class)).willThrow(new RuntimeException("error"));
 
         // when
-        final Result result = collectAuditLogAnnotationService.retry();
+        final Result result = collectAuditLogService.retry();
 
         // then
         assertThat(result.getRetryCount()).isEqualTo(4);
