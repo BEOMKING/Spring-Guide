@@ -6,3 +6,12 @@ CREATE TABLE IF NOT EXISTS shedlock
     locked_by  VARCHAR(255) NOT NULL,
     PRIMARY KEY (name)
 );
+
+CREATE TABLE IF NOT EXISTS print
+(
+    id          VARCHAR(64) NOT NULL,
+    print_order SMALLINT,
+    file_path   VARCHAR(255),
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id, print_order)
+);
