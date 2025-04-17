@@ -1,9 +1,12 @@
 package com.spring.guide.domain.file.service;
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.spring.guide.domain.file.domain.Print;
+import com.spring.guide.domain.file.dto.PresignedFileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -11,9 +14,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -60,5 +66,22 @@ public class FileUploadService {
                 throw new RuntimeException("파일 업로드 중 오류 발생", e);
             }
         }
+    }
+
+    public List<PresignedFileResponse> getPresignedUrls(final List<String> filenames) {
+        return filenames.stream()
+                .map(filename -> {
+                    final String key = "flas/" + UUID.randomUUID() + "_" + filename;
+
+                    final Date expiration = new Date(System.currentTimeMillis() + 1000 * 60 * 10); // 10분
+                    final GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(BUCKET_NAME, key)
+                            .withMethod(HttpMethod.PUT)
+                            .withExpiration(expiration);
+
+                    final URL url = s3Client.generatePresignedUrl(request);
+
+                    return new PresignedFileResponse(filename, key, url.toString());
+                })
+                .collect(Collectors.toList());
     }
 }

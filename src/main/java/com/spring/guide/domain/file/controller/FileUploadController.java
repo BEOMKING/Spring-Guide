@@ -1,6 +1,7 @@
 package com.spring.guide.domain.file.controller;
 
 import com.spring.guide.domain.file.domain.Print;
+import com.spring.guide.domain.file.dto.PresignedFileResponse;
 import com.spring.guide.domain.file.service.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/upload")
@@ -35,4 +37,9 @@ public class FileUploadController {
     }
 //        File file = new File("/Users/qjawlsqjacks/FASOO/docs/flas/tss & massro/[T-24-03-07-033] CPU 부하/mess.txt");
 //        byte[] fileBytes = Files.readAllBytes(file.toPath());
+
+    @PostMapping("/presigned-urls")
+    public List<PresignedFileResponse> getPresignedUrls(@RequestBody List<String> filenames) {
+        return fileUploadService.getPresignedUrls(filenames);
+    }
 }
